@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class EliteWorker : MonoBehaviour
 {
+
     public int HP = 8;
     public int ResNum = 2;
+
 }

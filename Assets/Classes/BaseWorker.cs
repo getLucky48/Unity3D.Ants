@@ -6,6 +6,7 @@ public class BaseWorker : Ant
 {
     
     public int ResNum = 1;
+
     public BaseWorker(int health, int protection, int resourcesCount)
     {
 

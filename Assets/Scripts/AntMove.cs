@@ -18,22 +18,22 @@ public class AntMove : MonoBehaviour
 
     void FixedUpdate()
     {
-        Vector3 moveDirecrion = new Vector3(transform.position.x - moveSpots[randomSpot].position.x, rb.velocity.y, transform.position.z - moveSpots[randomSpot].position.z);
-        Vector3 lookDirection = moveDirecrion + transform.position;
+        //Vector3 moveDirecrion = new Vector3(transform.position.x - moveSpots[randomSpot].position.x, rb.velocity.y, transform.position.z - moveSpots[randomSpot].position.z);
+        //Vector3 lookDirection = moveDirecrion + transform.position;
 
-        transform.position = Vector3.MoveTowards(transform.position, moveSpots[randomSpot].position, speed * Time.deltaTime);
-        transform.LookAt(new Vector3(moveSpots[randomSpot].position.x, 2000, moveSpots[randomSpot].position.z));
+        //transform.position = Vector3.MoveTowards(transform.position, moveSpots[randomSpot].position, speed * Time.deltaTime);
+        //transform.LookAt(new Vector3(moveSpots[randomSpot].position.x, 2000, moveSpots[randomSpot].position.z));
 
-        if (Vector3.Distance(transform.position, moveSpots[randomSpot].position) < 4f)
-        {
-            if (randomSpot == 0)
-            {
-                randomSpot = Random.Range(1, moveSpots.Length);
-            }
-            else
-            {
-                randomSpot = 0;
-            }
-        }
+        //if (Vector3.Distance(transform.position, moveSpots[randomSpot].position) < 4f)
+        //{
+        //    if (randomSpot == 0)
+        //    {
+        //        randomSpot = Random.Range(1, moveSpots.Length);
+        //    }
+        //    else
+        //    {
+        //        randomSpot = 0;
+        //    }
+        //}
     }
 }
