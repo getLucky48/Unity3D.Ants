@@ -8,6 +8,12 @@ public abstract class Ant : MonoBehaviour
     public int HP = 1;
     public int Protection = 1;
     public bool isAlive = true;
+    public float speed = 14.0f;
+
+    public Transform basePos;
+    public List<Transform> targetPos = new List<Transform>();
+    public int targetNum = 0;
+
     public Team team;
 
     //todo: для королевы переопределить метод через public override void GetDamage(int damage)
@@ -38,6 +44,15 @@ public abstract class Ant : MonoBehaviour
 
         this.team = team;
 
+        SetColor();
+
+    }
+
+    public virtual void SetColor()
+    {
+
+
+
     }
 
     public List<GameObject> GetNearEnemies(float distance)
@@ -63,6 +78,25 @@ public abstract class Ant : MonoBehaviour
         }
 
         return result;
+
+    }
+
+    public void SetBase(Transform target)
+    {
+
+        this.basePos = target;
+
+    }
+
+    public void SetTargets(List<Transform> targets)
+    {
+
+        //this.targetNum = Random.Range(1, targetPos.Count);
+
+        this.targetPos = targets;
+
+        if (this.basePos != null && this.targetPos[0] != this.basePos)
+            this.targetPos.Insert(0, this.basePos);
 
     }
 
