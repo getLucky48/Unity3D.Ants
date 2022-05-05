@@ -63,16 +63,18 @@
     <Compile Include="Assets\Classes\Ant.cs" />
     <Compile Include="Assets\Classes\Colony.cs" />
     <Compile Include="Assets\Classes\Warriors\BaseWarrior.cs" />
+    <Compile Include="Assets\Classes\Workers\ProLikedWorker.cs" />
     <Compile Include="Assets\Classes\Workers\ProWorker.cs" />
     <Compile Include="Assets\Classes\Warriors\LegendWarrior.cs" />
     <Compile Include="Assets\Classes\Warriors\ElderWarrior.cs" />
+    <Compile Include="Assets\Classes\Workers\Worker.cs" />
     <Compile Include="Assets\Scripts\AntMove.cs" />
     <Compile Include="Assets\Classes\Warriors\LegendCareWarrior.cs" />
     <Compile Include="Assets\Scripts\AntMoveWorker.cs" />
-    <Compile Include="Assets\Scripts\Main.cs" />
-    <Compile Include="Assets\Classes\Workers\Worker.cs" />
     <Compile Include="Assets\Classes\Workers\ElderWorker.cs" />
-    <Compile Include="Assets\Classes\Workers\ProLikedWorker.cs" />
+    <Compile Include="Assets\Scripts\Main.cs" />
+    <Compile Include="Assets\Classes\Target.cs" />
+    <Compile Include="Assets\Classes\Enums.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

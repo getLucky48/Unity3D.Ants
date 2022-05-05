@@ -9,10 +9,8 @@ public class Colony : MonoBehaviour
 {
 
     //todo королева
-    //todo воины
-    //todo работяги)0
 
-    public Ant.Team team;
+    public Enums.Team team;
 
     public Transform basePos;
     public List<Transform> targetPos = new List<Transform>();
@@ -35,14 +33,21 @@ public class Colony : MonoBehaviour
 
     #endregion
 
-    //Веточка
-    public int twigs = 0;
-    //Листик
-    public int leafs = 0;
-    //Камушек
-    public int rocks = 0;
-    //Росинка
-    public int drops = 0;
+    public Dictionary<Enums.TypeResourse, int> inventory = new Dictionary<Enums.TypeResourse, int>() {
+
+        {  Enums.TypeResourse.Twigs, 0 },
+        {  Enums.TypeResourse.Leafs, 0 },
+        {  Enums.TypeResourse.Rocks, 0 },
+        {  Enums.TypeResourse.Drops, 0 }
+
+    };
+
+    public void Import(Enums.TypeResourse type, int count)   
+    {
+
+        this.inventory[type] += count;
+
+    }
 
     public void InitTargetsAndBase()
     {
@@ -68,7 +73,7 @@ public class Colony : MonoBehaviour
         PrefabLegendCareWarrior = Resources.Load("Warriors/LegendCareWarrior", typeof(GameObject)) as GameObject;
         PrefabUpperLegendWarrior = Resources.Load("Warriors/UpperLegendWarrior", typeof(GameObject)) as GameObject;
 
-        InstantiateWarrior("Warrior", 0, 0, 0, 0, false);
+        InstantiateWarrior("Warrior", 0, 0, 0, 0, true);
         InstantiateWarrior("ElderWarrior", 0, 0, 0, 0, true);
         InstantiateWarrior("LegendWarrior", 0, 0, 0, 0, true);
         InstantiateWarrior("LegendCareWarrior", 0, 0, 0, 0, true);
@@ -80,11 +85,18 @@ public class Colony : MonoBehaviour
         PrefabProLikedWorker = Resources.Load("Workers/ProLikedWorker", typeof(GameObject)) as GameObject;
         PrefabProWorker = Resources.Load("Workers/ProWorker", typeof(GameObject)) as GameObject;
 
-        InstantiateWorker("Worker", 0, 0, 0, false);
+        InstantiateWorker("Worker", 0, 0, 0, true);
         InstantiateWorker("ElderWorker", 0, 0, 0, true);
         InstantiateWorker("EliteWorker", 0, 0, 0, true);
         InstantiateWorker("ProLikedWorker", 0, 0, 0, true);
         InstantiateWorker("ProWorker", 0, 0, 0, true);
+
+    }
+
+    public void AddResourse(Enums.TypeResourse type, int count)
+    {
+
+        this.inventory[type] = +count;
 
     }
 
@@ -144,10 +156,65 @@ public class Colony : MonoBehaviour
         else
             cfg = new GameObject();
 
-        cfg.GetComponent<BaseWorker>().Init(health, protection, inventoryCapacity);
+        cfg.GetComponent<BaseWorker>().Init(health, protection);
         cfg.GetComponent<BaseWorker>().SetBase(basePos);
         cfg.GetComponent<BaseWorker>().SetTargets(targetPos);
         cfg.GetComponent<BaseWorker>().SetTeam(team);
+
+        if (modelName.Equals("Worker"))
+        {
+
+            cfg.GetComponent<BaseWorker>().SetInventoryType(new Dictionary<Enums.TypeResourse, int>() {
+
+                { Enums.TypeResourse.Drops, 0 }
+
+            }, 1);
+
+        }
+        else if (modelName.Equals("ElderWorker"))
+        {
+
+            cfg.GetComponent<BaseWorker>().SetInventoryType(new Dictionary<Enums.TypeResourse, int>() {
+
+                { Enums.TypeResourse.Leafs, 0 },
+                { Enums.TypeResourse.Twigs, 0 }
+
+            }, 1);
+
+        }
+        else if (modelName.Equals("EliteWorker"))
+        {
+
+            cfg.GetComponent<BaseWorker>().SetInventoryType(new Dictionary<Enums.TypeResourse, int>() {
+
+                { Enums.TypeResourse.Leafs, 0 }
+
+            }, 2);
+
+        }
+        else if (modelName.Equals("ProLikedWorker"))
+        {
+
+            cfg.GetComponent<BaseWorker>().SetInventoryType(new Dictionary<Enums.TypeResourse, int>() {
+
+                { Enums.TypeResourse.Rocks, 0 },
+                { Enums.TypeResourse.Drops, 0 }
+
+            }, 2);
+
+        }
+        else if (modelName.Equals("ProWorker"))
+        {
+
+            cfg.GetComponent<BaseWorker>().SetInventoryType(new Dictionary<Enums.TypeResourse, int>() {
+
+                { Enums.TypeResourse.Rocks, 0 },
+                { Enums.TypeResourse.Twigs, 0 },
+                { Enums.TypeResourse.Leafs, 0 }
+
+            }, 2);
+
+        }
 
         Vector3 currentPos = transform.position;
 
@@ -171,28 +238,22 @@ public class Colony : MonoBehaviour
 
         InitTargetsAndBase();
 
-        InstantiateWarrior("Warrior", 10, 10, 0, 10);
-        InstantiateWarrior("ElderWarrior", 10, 10, 0, 10);
-        InstantiateWarrior("LegendWarrior", 10, 10, 0, 10);
-        InstantiateWarrior("LegendCareWarrior", 10, 10, 0, 10);
-        InstantiateWarrior("UpperLegendWarrior", 10, 10, 0, 10);
+        //InstantiateWarrior("Warrior", 10, 10, 0, 10);
+        //InstantiateWarrior("ElderWarrior", 10, 10, 0, 10);
+        //InstantiateWarrior("LegendWarrior", 10, 10, 0, 10);
+        //InstantiateWarrior("LegendCareWarrior", 10, 10, 0, 10);
+        //InstantiateWarrior("UpperLegendWarrior", 10, 10, 0, 10);
 
-
-
-        InstantiateWorker("Worker", 0, 0, 0);
-        InstantiateWorker("ElderWorker", 0, 0, 0);
-        InstantiateWorker("EliteWorker", 0, 0, 0);
-        InstantiateWorker("ProLikedWorker", 0, 0, 0);
-        InstantiateWorker("ProWorker", 0, 0, 0);
+        InstantiateWorker("Worker", 1000, 0, 0);
+        InstantiateWorker("ElderWorker", 1000, 0, 0);
+        InstantiateWorker("EliteWorker", 1000, 0, 0);
+        InstantiateWorker("ProLikedWorker", 1000, 0, 0);
+        InstantiateWorker("ProWorker", 1000, 0, 0);
 
     }
 
     void Update()
     {
-
-        //todo
-        //if (Vector3.Distance(transform.position, targetPos[targetNum].position) < 4f)
-        //Значит, муравей пришел на базу - очистить инвентарь, записать результат
 
     }
 

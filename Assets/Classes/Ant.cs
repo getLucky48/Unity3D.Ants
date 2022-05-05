@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,7 +15,11 @@ public abstract class Ant : MonoBehaviour
     public List<Transform> targetPos = new List<Transform>();
     public int targetNum = 0;
 
-    public Team team;
+    public bool returnedToBase = false;
+
+    public Enums.Team team = Enums.Team.None;
+    public Rigidbody rb;
+
 
     //todo: для королевы переопределить метод через public override void GetDamage(int damage)
     public virtual void GetDamage(int damage)
@@ -39,7 +44,7 @@ public abstract class Ant : MonoBehaviour
 
     }
 
-    public void SetTeam(Team team)
+    public void SetTeam(Enums.Team team)
     {
 
         this.team = team;
@@ -55,27 +60,20 @@ public abstract class Ant : MonoBehaviour
 
     }
 
-    public List<GameObject> GetNearEnemies(float distance)
+    public List<GameObject> GetNearEnemy(GameObject Ant, float distance)
     {
+
+        Collider[] enemies = Physics.OverlapSphere(Ant.transform.position, distance);
 
         List<GameObject> result = new List<GameObject>();
 
-        foreach (var gameObj in FindObjectsOfType(typeof(GameObject)) as GameObject[])
+        foreach (Collider col in enemies)
         {
-
-            Ant a = gameObj.GetComponent<Ant>();
-
-            if (!a) continue;
-            if (transform.position == gameObj.transform.position) continue;
-
-            if (Vector3.Distance(transform.position, gameObj.transform.position) <= distance)
-            {
-
-                result.Add(gameObj);
-
-            }
-
+            result.Add(col.gameObject);
         }
+
+        result = result.FindAll(t => t.GetComponent<Ant>() != null);
+        result = result.FindAll(t => t.GetComponent<Ant>().team != Ant.GetComponent<Ant>().team);
 
         return result;
 
@@ -91,21 +89,10 @@ public abstract class Ant : MonoBehaviour
     public void SetTargets(List<Transform> targets)
     {
 
-        //this.targetNum = Random.Range(1, targetPos.Count);
-
         this.targetPos = targets;
 
         if (this.basePos != null && this.targetPos[0] != this.basePos)
             this.targetPos.Insert(0, this.basePos);
-
-    }
-
-    public enum Team
-    {
-
-        None,
-        Red,
-        Black
 
     }
     
@@ -113,7 +100,7 @@ public abstract class Ant : MonoBehaviour
     public virtual void Start()
     {
 
-
+        rb = GetComponent<Rigidbody>();
 
     }
 

@@ -8,7 +8,7 @@ public class BaseWarrior : Ant
     public int Damage = 1;
     public int EnemiesNumber = 1;
 
-    public bool damageGiven = false;
+    public int damageGiven = 0;
 
     public virtual void Init(int health, int damage, int protection, int enemiesnum)
     {
@@ -30,44 +30,30 @@ public class BaseWarrior : Ant
     public override void SetColor()
     {
 
-        if (this.team == Team.Red)
+        if (this.team == Enums.Team.Red)
             GetComponent<Renderer>().material = (Resources.Load("Materials/Red_Warrior", typeof(Material)) as Material);
 
-        if (this.team == Team.Black)
+        if (this.team == Enums.Team.Black)
             GetComponent<Renderer>().material = (Resources.Load("Materials/Black_Warrior", typeof(Material)) as Material);
 
     }
 
     public override void FixedUpdate()
     {
-        //todo: переписать метод - слишком тяжелый
-        //List<GameObject> enemies = GetNearEnemies(10.0f);
+        //todo: при спавне убивает одного из муравьев
+        List<GameObject> enemies = GetNearEnemy(gameObject, 10.0f);
 
-        List<GameObject> enemies = new List<GameObject>();
-
-        try
+        if (enemies.Count != 0 && damageGiven < EnemiesNumber)
         {
 
-            //enemies = enemies.GetRange(0, EnemiesNumber - 1);
-
-        }
-        catch (System.ArgumentException e) {
-
-            
-
-        }
-
-        if (enemies.Count != 0 && !damageGiven)
-        {
-
-            foreach(GameObject enemy in enemies)
+            for(int i = 0; i < EnemiesNumber && i < enemies.Count; i++)
             {
 
-                enemy.GetComponent<Ant>().GetDamage(Damage);
+                enemies[i].GetComponent<Ant>().GetDamage(Damage);
+
+                damageGiven++;
 
             }
-
-            damageGiven = !damageGiven;
 
         }
         else
@@ -86,8 +72,14 @@ public class BaseWarrior : Ant
             if (Vector3.Distance(transform.position, targetPos[targetNum].position) < 4f)
             {
 
-                if (targetNum == 0)
+                if (targetNum == 0 && !this.returnedToBase)
+                {
+
                     targetNum = Random.Range(1, targetPos.Count);
+                    
+                    this.returnedToBase = true;
+
+                }   
                 else
                     targetNum = 0;
 
